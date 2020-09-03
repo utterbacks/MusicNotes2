@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicNotes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />    
+    <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
+    <script src="/public/musicNotes.js"></script>
+</head>
+<body>
+  <nav>
+  <div class="ui container">
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <div class="header item">
+          <i class="music icon"></i><a href="/">Music Notes</a>
+        </div>
+        <% if(!currentUser){ %>
+        <a href="/about" class="item">About</a>
+        <% } else{ %>
+        <a href="/users/<%= currentUser._id %>" class="item">Hello, <%= currentUser.username %>!</a>
+        <a href="/about" class="item">About</a>
+        <a href="/logout" class="item">Logout</a>
+        <% } %>
+      </div>  
+    </div>
+  </nav>
+</div>
+<div class="ui container main">
+  <div class="ui container" id="message">
+  <% if(error && error.length > 0){ %>
+    <div class="ui centered four wide column error message" role="alert">
+          <%= error %>
+    </div>
+  <% } %> 
+  <% if(success && success.length > 0){ %>
+    <div class="ui centered four wide column success message" role="alert">
+        <%= success %>
+    </div>
+  <% } %>
+  </div>
+

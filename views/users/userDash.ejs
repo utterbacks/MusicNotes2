@@ -1,0 +1,51 @@
+<%- include ("../partials/header") %>
+
+
+<% if(currentUser.isTeacher === true) { %>
+    <% if(currentUser.students.length === 0) {%>
+        <h1 class="ui huge header"><%= currentUser.username%>'s Teacher Dashboard</h1>
+        <h2 class="ui big header">Here are your students:</h2>
+        <p>No one is registered! <a href="/users/<%= currentUser._id %>/findStudents">Let's find our students.</a></p>
+    <% } else { %>
+        <ul>
+            <% for(var i=0; i < currentUser.students.length; i++) { %>
+            <li>
+                <%= currentUser.students[i].firstName %> <%= currentUser.students[i].lastName %> 
+                <ul>
+                    <li>
+                        <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>/createAssignment">New Assignment</a>
+                    </li>
+                    <li>
+                        <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>"><%= currentUser.students[i].firstName %>'s Assignments</a>
+                    </li>
+                </ul>
+            </li>
+            <% } %>
+        </ul>
+        <p><a href="/users/<%= currentUser._id %>/findStudents">Let's find more students.</a></p>
+    <% } %>
+<% } else if(currentUser.isTeacher === false) {%>
+    <h1 class="ui huge header"><%= currentUser.username%>'s Dashboard</h1>
+    <h2 class="ui big header">Here are your students!</h2>
+    <% if(currentUser.students.length === 0) {%>
+        <p>Oops! Looks like you haven't registered a student. <a href="/users/<%= currentUser._id %>/createStudent">You can do that here.</a> </p>
+    <% } else { %>
+        <ul>
+            <% for(var i=0; i < currentUser.students.length; i++) { %>
+                <li>
+                    <%= currentUser.students[i].firstName %> <%= currentUser.students[i].lastName %> 
+                    <ul>
+                        
+                        <li>
+                            <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>"><%= currentUser.students[i].firstName %>'s Assignments</a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+            <p><a href="/users/<%= currentUser._id %>/createStudent">Add a new student.</a></p>
+        </ul>
+    <% } %>
+    <%}%>
+</div>
+</div>
+<%- include ("../partials/footer") %>

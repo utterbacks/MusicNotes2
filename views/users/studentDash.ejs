@@ -1,0 +1,27 @@
+<%- include ("../partials/header") %>
+
+<h1 class="ui huge header"><%= student.firstName %> <%= student.lastName %>'s Assignments</h1>
+<% if(student.assignments.length === 0) {%>
+    <p>No assignments yet! Time to relax.</p>
+    <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
+<% } else if(currentUser.isTeacher === true){ %>
+    <ul>
+        <% for(var i=0; i < student.assignments.length; i++) { %>
+        <li>
+           <a href="/users/<%= currentUser._id %>/student/<%= student._id %>/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
+            
+        </li>
+        <% } %>
+    </ul>
+    <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
+<% } else { %> 
+    <ul>
+        <% for(var i=0; i < student.assignments.length; i++) { %>
+        <li>
+           <a href="/users/<%= currentUser._id %>/student/<%= student._id %>/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
+            
+        </li>
+        <% } %>
+    <% } %>
+
+<%- include ("../partials/footer") %>

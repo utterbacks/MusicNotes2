@@ -1,0 +1,57 @@
+<%- include ("../partials/header") %>
+
+ <div class="ui centered divided grid">
+        <div class="row">
+            <div class="eight wide column">
+                <form class="ui centered form" action="/signup" method="POST">
+                    <div class="ui item">
+                        <h1 class="ui centered header">
+                            Create a teacher account.
+                        </h1>
+                    </div>
+                    <div class="ui hidden divider"></div>
+                    <div class="field">
+                        <input required="true" type="text" placeholder="First Name" name="username">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="text" name="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="email" placeholder="Email" name="email">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="password" placeholder="Password" name="password">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="password" placeholder="Admin Code" name="adminCode">
+                    </div>
+                    <input class="ui secondary big basic button" type="submit" value="Let's Get Started">
+                </form>
+            </div>
+            <div class="eight wide column">
+                <form class="ui centered form" action="/signup" method="POST">
+                    <div class="ui item">
+                        <h1 class="ui centered header">
+                            Sign Up
+                        </h1>
+                    </div>
+                    <div class="ui hidden divider"></div>
+                    <div class="field">
+                        <input required="true" type="text" placeholder="First Name" name="username">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="text" name="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="email" placeholder="Email" name="email">
+                    </div>
+                    <div class="field">
+                        <input required="true" type="password" placeholder="Password" name="password">
+                    </div>
+                    <input class="ui secondary big basic button" type="submit" value="Let's Get Started">
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+<%- include ("../partials/footer") %>

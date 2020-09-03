@@ -1,0 +1,45 @@
+<%- include ("../partials/header") %>
+
+    <div class="ui centered grid">
+
+        
+        <form class="ui form" action="/users/<%= currentUser._id %>/createStudent" method="POST">
+            <div class="ui item">
+                <h1 class="ui header">
+                    Please add your student's information.
+                </h1>
+            </div>
+            <div class="ui hidden divider"></div>
+            <div class="field">
+                <input required="true" type="text" placeholder="First Name" name="firstName">
+            </div>
+            <div class="field">
+                <input required="true" type="text" name="lastName" placeholder="Last Name">
+            </div>
+            <div class="field">
+                <input required="true" type="date" name="age">
+            </div>
+            <div class="field">
+                <select name="instrument" class="ui selection dropdown">
+                    <option value="">Instrument</option>
+                    <option value="4">Guitar</option>
+                    <option value="3">Bass</option>
+                    <option value="2">Drums</option>
+                    <option value="1">Piano</option>
+                    <option value="0">Ukulele</option>
+
+                  </select>
+            </div>
+            <div class="field">
+                <input required="true" type="text" placeholder="Teacher's First Name" name="teacher">
+            </div>
+            <input class="ui secondary big basic button" type="submit" value="Submit">
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include ("../partials/footer") %>

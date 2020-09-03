@@ -1,0 +1,57 @@
+
+.container.main {
+    padding-top: 9rem;
+}
+
+#message {
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+
+}
+
+.error.message {
+    margin-left: 15rem;
+    margin-right: 15rem;
+}
+
+.success.message {
+    margin-left: 15rem;
+    margin-right: 15rem;
+}
+.form {
+    text-align: center;
+}
+.basic.button {
+    margin: 2rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.fixed {
+    padding: 1.5rem;
+}
+
+.music.icon {
+    font-size: 2rem;
+}
+
+#assignments {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin: 5px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 5px;
+    padding: 5px;
+}
+
+li{
+    margin: none;
+    padding: none;
+}
