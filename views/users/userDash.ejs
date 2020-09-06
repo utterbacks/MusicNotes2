@@ -13,10 +13,10 @@
                 <%= currentUser.students[i].firstName %> <%= currentUser.students[i].lastName %> 
                 <ul>
                     <li>
-                        <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>/createAssignment">New Assignment</a>
+                        <a  class="ui secondary mini basic button" id="assignments" href="/student/<%= currentUser.students[i]._id%>/createAssignment">New Assignment</a>
                     </li>
                     <li>
-                        <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>"><%= currentUser.students[i].firstName %>'s Assignments</a>
+                        <a  class="ui secondary mini basic button" id="assignments" href="/student/<%= currentUser.students[i]._id%>"><%= currentUser.students[i].firstName %>'s Assignments</a>
                     </li>
                 </ul>
             </li>
@@ -26,7 +26,7 @@
     <% } %>
 <% } else if(currentUser.isTeacher === false) {%>
     <h1 class="ui huge header"><%= currentUser.username%>'s Dashboard</h1>
-    <h2 class="ui big header">Here are your students!</h2>
+    <h2 class="ui big header">Here are your students:</h2>
     <% if(currentUser.students.length === 0) {%>
         <p>Oops! Looks like you haven't registered a student. <a href="/users/<%= currentUser._id %>/createStudent">You can do that here.</a> </p>
     <% } else { %>
@@ -37,7 +37,11 @@
                     <ul>
                         
                         <li>
-                            <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= currentUser.students[i]._id%>"><%= currentUser.students[i].firstName %>'s Assignments</a>
+                            <a  class="ui secondary mini basic button" 
+                                id="assignments" 
+                                href="/student/<%= currentUser.students[i]._id%>">
+                                    <%= currentUser.students[i].firstName %>'s Assignments
+                                </a>
                         </li>
                     </ul>
                 </li>
@@ -48,4 +52,6 @@
     <%}%>
 </div>
 </div>
+
+
 <%- include ("../partials/footer") %>

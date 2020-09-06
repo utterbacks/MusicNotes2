@@ -6,7 +6,14 @@ const StudentSchema= new Schema({
     lastName: String,
     age: String,
     instrument: String,
-    assignments: []
+    assignments: [],
+    parent: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
 });
 
 const Student = mongoose.model("student", StudentSchema);

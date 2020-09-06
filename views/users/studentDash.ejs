@@ -1,9 +1,11 @@
 <%- include ("../partials/header") %>
 
 <h1 class="ui huge header"><%= student.firstName %> <%= student.lastName %>'s Assignments</h1>
-<% if(student.assignments.length === 0) {%>
+<% if(student.assignments.length === 0 && currentUser.isTeacher === true) {%>
     <p>No assignments yet! Time to relax.</p>
     <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
+<% } else if(student.assignments.length === 0 && currentUser.isTeacher === false) { %>  
+    <p>No assignments yet! Time to relax.</p>  
 <% } else if(currentUser.isTeacher === true){ %>
     <ul>
         <% for(var i=0; i < student.assignments.length; i++) { %>
@@ -14,7 +16,7 @@
         <% } %>
     </ul>
     <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
-<% } else { %> 
+<% } else if(currentUser.isTeacher === false) { %> 
     <ul>
         <% for(var i=0; i < student.assignments.length; i++) { %>
         <li>
