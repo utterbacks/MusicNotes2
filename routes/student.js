@@ -22,7 +22,7 @@ router.get("/users/:id/createStudent", function(req, res){
     res.render("users/createStudent");
 });
 
-router.post("/users/:id/createStudent", function(req, res){
+router.post("/users/:id/createStudent",  async function(req, res, next){
     const firstName = req.body.firstName,
           lastName = req.body.lastName,
           age = req.body.age,
@@ -30,63 +30,23 @@ router.post("/users/:id/createStudent", function(req, res){
           parent = {
                   id: req.user._id,
                   username: req.user.username
-          },
+                },
           newStudent = {
                   firstName: firstName,
                   lastName: lastName,
                   age: age,
                   instrument: instrument,
                   parent: parent
-          }
-    Student.create(newStudent, function(err, newlyCreated){
+                }
+        Student.create(newStudent,  function(err){
             if(err){
                     console.log(err);
                     req.flash("error", "error")
             } else {
-                    User.findById(req.params.id, function(err, parent){
-                            if(err){
-                                    req.flash("error", "error");
-                                    console.log(err);
-                            } else {
-                                    parent.students.push(newlyCreated);
-                                    return parent.save();
-                                    
-                            }
-                    })
-                    .then(() => {
-                            req.flash("success", "Succesfully added student.")
-                            res.redirect("/users/:id");
-                    })
-            }     
-    })
-})
-
-// router.post("/users/:id", function(req, res, next){
-//         Student.create(function(err){
-//                 if(err){
-//                         console.log(err)
-//                         res.redirect("/")
-//                 } else {
-//                         const newStudent = new Student({
-//                                 firstName: req.body.firstName,
-//                                 lastName: req.body.lastName,
-//                                 age: req.body.age,
-//                                 instrument: req.body.instrument,
-//                         });
-//                         newStudent.save()
-//                         .then(() => User.findById(req.params.id))
-//                         .then((user) => {
-//                                 user.students.push(newStudent);
-//                                 return user.save();
-//                         })
-//                         .then(() => {
-//                                 req.flash("success", "Successfully created student!");
-//                                 return res.redirect("/users/:id")
-//                         })
-//                         .catch(next);
-//                 }
-//         })
-// });
+                    res.redirect("/users/:id")     
+                    }
+                })        
+    });
 
 // TEACHER ADDS STUDENT
 router.get("/users/:id/findStudents", function (req,res){
@@ -101,22 +61,26 @@ router.get("/users/:id/findStudents", function (req,res){
 
 });
 
-router.post("/users/:id/findStudents", function(req, res){
+router.post("/users/:id/findStudents",  function(req, res){
     Student.findOne({firstName: req.body.studentName}, function(err, foundStudent){
         if(err){
             req.flash("error", "let's try that again")
             console.log(err)
         } else {
-            User.findById(req.params.id, function(err, teacher){
+            User.findById(req.params.id, async function(err, teacher){
                 if(err){
                     req.flash("error", err.message)
                     console.log(err)
                 } else{
-                    teacher.students.push(foundStudent);
-                    teacher.save();
-                    res.redirect("/users/:id");                                                                        
+                    teacher.students.push(foundStudent.toJSON());
+                    await teacher.save();
+                                                                                        
                 }
-            });
+            })
+            .then(() => {
+                req.flash("success", "You added a student to your roster!");
+                return res.redirect("/users/:id")
+            })
         }
     });       
 });

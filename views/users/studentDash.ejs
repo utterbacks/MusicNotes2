@@ -10,7 +10,7 @@
     <ul>
         <% for(var i=0; i < student.assignments.length; i++) { %>
         <li>
-           <a href="/users/<%= currentUser._id %>/student/<%= student._id %>/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
+           <a href="/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
             
         </li>
         <% } %>
@@ -20,7 +20,7 @@
     <ul>
         <% for(var i=0; i < student.assignments.length; i++) { %>
         <li>
-           <a href="/users/<%= currentUser._id %>/student/<%= student._id %>/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
+           <a href="/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
             
         </li>
         <% } %>

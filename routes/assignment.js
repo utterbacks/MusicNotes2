@@ -30,7 +30,7 @@ router.post("/student/:student_id/createAssignment", function(req, res){
                                      newAssignment.save();
                                      foundStudent.assignments.push(newAssignment);
                                      foundStudent.save();
-                                     res.render("students/studentDash", {student: foundStudent, assignment: newAssignment});
+                                     res.render("users/studentDash", {student: foundStudent, assignment: newAssignment});
                                      }
                              })
              }
@@ -45,7 +45,7 @@ router.get("/assignments/:assignment_id", function(req, res){
                     req.flash("error", "Can't find that assignment.");
                     console.log(err);
             } else {
-                    res.render("assignments/showAssignments", {assignment: foundAssignment})
+                    res.render("assignments/showAssignment", {assignment: foundAssignment})
             }
     })
 })

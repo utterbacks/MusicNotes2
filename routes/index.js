@@ -1,3 +1,5 @@
+const Student = require("../models/student");
+
 const   express = require("express"),
         router = express.Router(),
         passport = require("passport"),
@@ -51,8 +53,24 @@ router.post('/signin', passport.authenticate('userLocal',
 
             // user dash
 router.get("/users/:id", function(req, res){
-        const currentUser = req.user
-        res.render("users/userDash", {user: currentUser})
+        User.findById(req.user._id, function(err, foundUser){
+                if(err){
+                        req.flash("error", err.message);
+                        res.redirect("back");
+                } else if(foundUser.isTeacher === false){
+                        Student.find().where("parent.id").equals(foundUser._id).exec(function(err, students){
+                                if(err){
+                                        
+                                        req.flash("error", err.message);
+                                        res.redirect("back");
+                                }
+                                res.render("users/userDash", {user: foundUser, students: students});
+                                })
+                } else{
+                        res.render("users/userDash", {user:foundUser})
+                }
+                
+        })
 });
 
 router.get("/logout", function(req, res){
