@@ -18,7 +18,8 @@ const   express = require("express"),
 mongoose.connect("mongodb://localhost:27017/music_notes2", {
 	useNewUrlParser: true,
 	useCreateIndex: true, 
-	useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false
 });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs")

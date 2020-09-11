@@ -3,6 +3,12 @@
 <h1><%= assignment.title %></h1>
 <h3><%= assignment.created.toDateString() %></h3>
 <p><%= assignment.content %></p>
-
+<% if(currentUser && assignment.author.id.equals(currentUser._id)){ %>
+<form action="/student/<%= student._id %>/assignments/<%= assignment._id %>?_method=DELETE" method="POST">
+    <button class="ui mini button" id="assignments">
+        <i class="trash alternate outline icon"></i>
+    </button>
+</form>
+<%}%>
 </div>
 <%- include ("../partials/footer") %>

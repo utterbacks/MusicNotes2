@@ -35,7 +35,7 @@ router.post("/signup", function(req, res){
                 } 
                 passport.authenticate("userLocal")(req, res, function(){
                         req.flash("success", "Welcome to MusicNotes, " + user.username + "!");
-                        res.redirect("/users/:id", {user: req.user});
+                        res.redirect("/users/:id");
                 });
         });
 });
@@ -59,15 +59,20 @@ router.get("/users/:id", function(req, res){
                         res.redirect("back");
                 } else if(foundUser.isTeacher === false){
                         Student.find().where("parent.id").equals(foundUser._id).exec(function(err, students){
-                                if(err){
-                                        
+                                if(err){          
                                         req.flash("error", err.message);
                                         res.redirect("back");
                                 }
                                 res.render("users/userDash", {user: foundUser, students: students});
                                 })
-                } else{
-                        res.render("users/userDash", {user:foundUser})
+                } else if(foundUser.isTeacher === true){
+                        Student.find().where("teacher._id").equals(foundUser._id).exec(function(err, students){
+                                if(err){
+                                        req.flash("error", err.message);
+                                        res.redirect("back");
+                                }
+                                res.render("users/userDash", {user: foundUser, students: students})
+                        })
                 }
                 
         })

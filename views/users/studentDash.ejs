@@ -1,29 +1,29 @@
 <%- include ("../partials/header") %>
 
 <h1 class="ui huge header"><%= student.firstName %> <%= student.lastName %>'s Assignments</h1>
-<% if(student.assignments.length === 0 && currentUser.isTeacher === true) {%>
+<% if(assignments.length === 0 && currentUser.isTeacher === true) {%>
     <p>No assignments yet! Time to relax.</p>
-    <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
-<% } else if(student.assignments.length === 0 && currentUser.isTeacher === false) { %>  
+    <a  class="ui secondary mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
+<% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>  
     <p>No assignments yet! Time to relax.</p>  
 <% } else if(currentUser.isTeacher === true){ %>
     <ul>
-        <% for(var i=0; i < student.assignments.length; i++) { %>
+        <% assignments.forEach(function(assignment) { %>
         <li>
-           <a href="/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
-            
+           <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+            <div class="ui divider"></div>
         </li>
-        <% } %>
+        <% }) %>
     </ul>
-    <a  class="ui secondary mini basic button" id="assignments" href="/users/<%= currentUser._id %>/student/<%= student._id %>/createAssignment">New Assignment</a>
+    <a  class="ui mini teal basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
 <% } else if(currentUser.isTeacher === false) { %> 
     <ul>
-        <% for(var i=0; i < student.assignments.length; i++) { %>
-        <li>
-           <a href="/assignments/<%= student.assignments[i]._id %>"><%= student.assignments[i].title %></a>
-            
-        </li>
-        <% } %>
+        <% assignments.forEach(function(assignment) { %>
+            <li>
+               <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+                
+            </li>
+            <% }) %>
     <% } %>
 
 <%- include ("../partials/footer") %>

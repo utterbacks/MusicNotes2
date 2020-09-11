@@ -7,6 +7,20 @@ const assignmentSchema= new Schema({
     created:{
         type: Date,
         default: Date.now
+    },
+    author:{
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
+    student:{
+        id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Student"
+        },
+        firstName: String
     }
 });
 

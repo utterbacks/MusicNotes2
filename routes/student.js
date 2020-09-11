@@ -1,28 +1,38 @@
+const Assignment = require("../models/assignment");
+
 const   express = require("express"),
         router = express.Router(),
         Student = require("../models/student"),
-        User = require("../models/user");
+        User = require("../models/user"),
+        middleware = require("../middleware");
 
 // STUDENT VIEW
 
-router.get("/student/:student_id", function(req, res){
+router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
     Student.findById(req.params.student_id, function(err, foundStudent){
             if(err || !foundStudent){
                     req.flash("error", "No Student Found");
                     console.log(err)
                     return res.redirect("back");
             } else{
-                    res.render("users/studentDash", {user_id: req.params.id, student: foundStudent});
+                Assignment.find().where("student.id").equals(foundStudent.id).exec(function(err, assignments){
+                    if(err){
+                        req.flash("error", err.message);
+                        res.redirect("back");
+                    } else{
+                        res.render("users/studentDash", {student: foundStudent, assignments: assignments});
+                    }
+                })
             }
     });
 });
 
 // USER CREATE STUDENT
-router.get("/users/:id/createStudent", function(req, res){
+router.get("/users/:id/createStudent", middleware.isLoggedIn, function(req, res){
     res.render("users/createStudent");
 });
 
-router.post("/users/:id/createStudent",  async function(req, res, next){
+router.post("/users/:id/createStudent", middleware.isLoggedIn, function(req, res){
     const firstName = req.body.firstName,
           lastName = req.body.lastName,
           age = req.body.age,
@@ -49,7 +59,7 @@ router.post("/users/:id/createStudent",  async function(req, res, next){
     });
 
 // TEACHER ADDS STUDENT
-router.get("/users/:id/findStudents", function (req,res){
+router.get("/users/:id/findStudents", middleware.isLoggedIn, function (req,res){
     Student.find({}, function(err, students){
             if(err){
                     req.flash("error", "No Students Found")
@@ -61,7 +71,7 @@ router.get("/users/:id/findStudents", function (req,res){
 
 });
 
-router.post("/users/:id/findStudents",  function(req, res){
+router.post("/users/:id/findStudents", middleware.isLoggedIn,  function(req, res){
     Student.findOne({firstName: req.body.studentName}, function(err, foundStudent){
         if(err){
             req.flash("error", "let's try that again")
@@ -72,8 +82,8 @@ router.post("/users/:id/findStudents",  function(req, res){
                     req.flash("error", err.message)
                     console.log(err)
                 } else{
-                    teacher.students.push(foundStudent.toJSON());
-                    await teacher.save();
+                    foundStudent.teacher.push(teacher.toJSON());
+                    await foundStudent.save();
                                                                                         
                 }
             })
@@ -84,4 +94,15 @@ router.post("/users/:id/findStudents",  function(req, res){
         }
     });       
 });
+
+router.delete("/student/:student_id", function(req, res){
+    Student.findByIdAndRemove(req.params.student_id, function(err, foundStudent){
+        if(err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        } else{
+            res.redirect("/users/" + req.user.id);
+        }
+    })
+})
 module.exports = router;

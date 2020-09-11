@@ -2,30 +2,27 @@
 
 
 <% if(user.isTeacher === true) { %>
-    <% if(user.students.length === 0) {%>
+    <% if(students.length === 0) {%>
         <h1 class="ui huge header"><%= user.username%>'s Teacher Dashboard</h1>
         <h2 class="ui big header">Here are your students:</h2>
         <p>No one is registered! <a href="/users/<%= user._id %>/findStudents">Let's find our students.</a></p>
     <% } else { %>
         <ul>
-            <% for(var i=0; i < user.students.length; i++) { %>
-            <li>
-                <%= user.students[i].firstName %> <%= user.students[i].lastName %> 
-                <ul>
-                    <li>
-                        <a  class="ui secondary mini basic button" id="assignments" href="/student/<%= user.students[i]._id%>/createAssignment">New Assignment</a>
-                    </li>
-                    <li>
-                        <a  
-                            class="ui secondary mini basic button" 
-                            id="assignments" 
-                            href="/student/<%= user.students[i]._id%>">
-                            <%= user.students[i].firstName %>'s Assignments
-                    </a>
-                    </li>
-                </ul>
-            </li>
-            <% } %>
+            <% students.forEach(function(student){ %>
+                <li>
+                    <%= student.firstName %> <%= student.lastName %> 
+                    <ul>
+                        
+                        <li>
+                            <a  class="ui secondary mini basic button" 
+                                id="assignments" 
+                                href="/student/<%= student._id%>">
+                                    <%= student.firstName %>'s Assignments
+                                </a>
+                        </li>
+                    </ul>
+                </li>
+                <% }) %>
         </ul>
         <p><a href="/users/<%= user._id %>/findStudents">Let's find more students.</a></p>
     <% } %>
