@@ -7,23 +7,25 @@
         <h2 class="ui big header">Here are your students:</h2>
         <p>No one is registered! <a href="/users/<%= user._id %>/findStudents">Let's find our students.</a></p>
     <% } else { %>
-        <ul>
+        <div class="ui relaxed divided list">
             <% students.forEach(function(student){ %>
-                <li>
-                    <%= student.firstName %> <%= student.lastName %> 
-                    <ul>
-                        
-                        <li>
-                            <a  class="ui secondary mini basic button" 
-                                id="assignments" 
-                                href="/student/<%= student._id%>">
-                                    <%= student.firstName %>'s Assignments
-                                </a>
-                        </li>
-                    </ul>
-                </li>
+                <div class="item">
+                    <div class="content">
+                        <%= student.firstName %> <%= student.lastName %> 
+                        <ul>
+                            
+                            <li>
+                                <a  class="ui secondary mini basic button" 
+                                    id="assignments" 
+                                    href="/student/<%= student._id%>">
+                                        <%= student.firstName %>'s Assignments
+                                    </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <% }) %>
-        </ul>
+        </div>
         <p><a href="/users/<%= user._id %>/findStudents">Let's find more students.</a></p>
     <% } %>
 <% } else if(user.isTeacher === false) {%>
@@ -32,24 +34,31 @@
     <% if(students.length === 0) {%>
         <p>Oops! Looks like you haven't registered a student. <a href="/users/<%= user._id %>/createStudent">You can do that here.</a> </p>
     <% } else { %>
-        <ul>
+        <div class="ui relaxed divided list">
             <% students.forEach(function(student){ %>
-                <li>
-                    <%= student.firstName %> <%= student.lastName %> 
-                    <ul>
-                        
-                        <li>
-                            <a  class="ui secondary mini basic button" 
-                                id="assignments" 
-                                href="/student/<%= student._id%>">
-                                    <%= student.firstName %>'s Assignments
+                <div class="item">
+                    <div class="content">
+                        <%= student.firstName %> <%= student.lastName %> 
+                        <ul>
+                            
+                            <li>
+                                <a  class="ui secondary mini basic button" 
+                                    id="assignments" 
+                                    href="/student/<%= student._id%>">
+                                        <%= student.firstName %>'s Assignments
                                 </a>
-                        </li>
-                    </ul>
-                </li>
+                                <form action="/student/<%= student._id %>?_method=DELETE" method="POST">
+                                    <button class="ui negative mini basic button" id="assignments">
+                                        Remove Student
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <% }) %>
             <p><a href="/users/<%= user._id %>/createStudent">Add a new student.</a></p>
-        </ul>
+        </div>
     <% } %>
     <%}%>
 </div>

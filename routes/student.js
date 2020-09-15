@@ -95,6 +95,8 @@ router.post("/users/:id/findStudents", middleware.isLoggedIn,  function(req, res
     });       
 });
 
+// parent deletes student
+
 router.delete("/student/:student_id", function(req, res){
     Student.findByIdAndRemove(req.params.student_id, function(err, foundStudent){
         if(err){

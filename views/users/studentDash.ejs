@@ -3,18 +3,19 @@
 <h1 class="ui huge header"><%= student.firstName %> <%= student.lastName %>'s Assignments</h1>
 <% if(assignments.length === 0 && currentUser.isTeacher === true) {%>
     <p>No assignments yet! Time to relax.</p>
-    <a  class="ui secondary mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
+    <a  class="ui teal mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
 <% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>  
     <p>No assignments yet! Time to relax.</p>  
 <% } else if(currentUser.isTeacher === true){ %>
-    <ul>
+    <div class="ui relaxed divided list">
         <% assignments.forEach(function(assignment) { %>
-        <li>
-           <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
-            <div class="ui divider"></div>
-        </li>
+        <div class="item">
+            <div class="content">
+                <a class="ui secondary mini teal basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+            </div>
+        </div>
         <% }) %>
-    </ul>
+    </div>
     <a  class="ui mini teal basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
 <% } else if(currentUser.isTeacher === false) { %> 
     <ul>

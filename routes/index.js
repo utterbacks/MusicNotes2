@@ -3,7 +3,10 @@ const Student = require("../models/student");
 const   express = require("express"),
         router = express.Router(),
         passport = require("passport"),
-        User = require("../models/user");
+        User = require("../models/user"),
+        async = require("async"),
+        nodemailer = require("nodemailer"),
+        crypto = require("crypto");
 
 // LANDING
 router.get("/", function(req, res){
@@ -50,6 +53,132 @@ router.post('/signin', passport.authenticate('userLocal',
         failureRedirect: '/signin',
         failureFlash: true
 }));
+
+// FORGOT PASS
+
+router.get("/forgot", function(req, res){
+        res.render("users/forgot");
+})
+
+router.post("/forgot", function(req, res, next){
+        async.waterfall([
+                function(done) {
+                        crypto.randomBytes(20, function(err, buf){
+                                const token = buf.toString('hex');
+                                done(err, token);
+                        });
+                },
+                function(token, done) {
+                        User.findOne({email: req.body.email}, function(err, user){
+                                if(!user) {
+                                        req.flash("error", "No account found with that email.");
+                                        return res. redirect("/forgot");
+                                }
+                                user.resetPasswordToken = token;
+                                user.resetPasswordExpires = Date.now() + 3600000;
+                                user.save(function(err){
+                                        done(err, token, user);
+                                });
+                        });
+                },
+                function(token, user, done){
+                        const smtpTransport = nodemailer.createTransport({
+                                service: 'gmail',
+                                auth: {
+                                        type: 'OAuth2',
+                                        user: 'musicnoteshelp@gmail.com',
+                                        clientId: '106565881651-mjsq8rnsmodnlf7l8l6ak6jc2r3qfgue.apps.googleusercontent.com',
+                                        clientSecret: 'y-mZ0ltUVzqAVOCiYkqiGV15',
+                                        refreshToken: '1//04TysrBLi4-WjCgYIARAAGAQSNwF-L9IrfpBX3ULxINmoOdh5QLSZVR0c3ejJyxTx_tUwBxrXSdRvWltXmXxpnuwqG_h8PpXYy5E',
+                                        accessToken: 'ya29.a0AfH6SMA7d1IGUqLZWDTXr1qUT0hFdnoxLtVgFHbD0yAbC7MzKz6lC3d8N9fo0_AUQK_Yiia1PZovFXas6A3TnWoW1lHxufuxGKOptm-pdcnpwpG0KDA_GTMy-uFpTpK7liGPBk1Ow4iZjJwwZcdSZbPB7D-HqSSUBmw'
+                                }
+                        });
+                        const mailOptions = {
+                                to: user.email,
+                                from: "musicnoteshelp@gmail.com",
+                                subject: "Music Notes Password Reset",
+                                text: "You are receiving this email because you (or someone else) have requested a password reset for your account on MusicNotes.app."
+                                        + "If you made this request your self, click the link below and we'll get you back into your account. " +
+                                        "http://" + req.headers.host + "/reset/" + token + "\n\n" +
+                                        "If you did not request this change, ignore this email and your password will remain unchanged. "
+                        };
+                        smtpTransport.sendMail(mailOptions, function(err){
+                                console.log("mail sent");
+                                req.flash("success", "An e-mail has been sent to " + user.email + " with further instructions.");
+                                done(err, "done");
+                        });
+                }
+        ], function(err) {
+                if(err) return next(err);
+                res.redirect("/forgot");
+        });
+});
+
+router.get("/reset/:token", function(req, res){
+        User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now()}}, function(err, user){
+                if(!user){
+                        req.flash("error", "Reset token is invalid or expired. Please try resetting your password again.");
+                        console.log(err);
+                        res.redirect("/forgot");
+                }
+                res.render("./users/reset", {token: req.params.token});
+        });
+});
+
+router.post("/reset/:token", function(req, res){
+        async.waterfall([
+                function(done){
+                        User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }}, function(err, user){
+                                if(!user){
+                                        req.flash("error", "Reset token is invalid or expired. Please try resetting your password again.")
+                                        return res.redirect("back");
+                                }
+                                if(req.body.password === req.body.confirm){
+                                        user.setPassword(req.body.password, function(err){
+                                                user.resetPasswordToken = undefined;
+                                                user.resetPasswordExpires = undefined;
+                                                user.save(function(err){
+                                                        req.logIn(user, function(err){
+                                                                done(err, user);
+                                                        });
+                                                });
+                                        });
+                                } else {
+                                        req.flash("error", "Passwords do not match.");
+                                        return res.redirect("back");
+                                }
+                        });
+                },
+                function(user, done){
+                        const smtpTransport = nodemailer.createTransport({
+                                service:"Gmail", 
+                                auth: {
+                                        type: 'OAuth2',
+                                        user: 'musicnoteshelp@gmail.com',
+                                        clientId: '106565881651-mjsq8rnsmodnlf7l8l6ak6jc2r3qfgue.apps.googleusercontent.com',
+                                        clientSecret: 'y-mZ0ltUVzqAVOCiYkqiGV15',
+                                        refreshToken: '1//04TysrBLi4-WjCgYIARAAGAQSNwF-L9IrfpBX3ULxINmoOdh5QLSZVR0c3ejJyxTx_tUwBxrXSdRvWltXmXxpnuwqG_h8PpXYy5E',
+                                        accessToken: 'ya29.a0AfH6SMA7d1IGUqLZWDTXr1qUT0hFdnoxLtVgFHbD0yAbC7MzKz6lC3d8N9fo0_AUQK_Yiia1PZovFXas6A3TnWoW1lHxufuxGKOptm-pdcnpwpG0KDA_GTMy-uFpTpK7liGPBk1Ow4iZjJwwZcdSZbPB7D-HqSSUBmw'
+                                }
+                        });
+                        const mailOptions = {
+                                to: user.email, 
+                                from: 'musicnoteshelp@gmail.com',
+                                subject: "Your MusicNotes password has changed.",
+                                text: "Hello, \n\n" + user.username + "!" +
+                                        " This is a confirmation that the password for your account " + user.email + " has just changed." +
+                                "If you did not make this change, respond to this email and tell me immediately."                     
+                        };
+                        smtpTransport.sendMail(mailOptions, function(err) {
+                                req.flash("success", "Success! Your password has been changed.");
+                                done(err);
+                        });
+                }
+        ], function(err){
+                res.redirect("/users/" + req.user._id);
+        });
+});
+
 
             // user dash
 router.get("/users/:id", function(req, res){

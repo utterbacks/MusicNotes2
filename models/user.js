@@ -6,7 +6,13 @@ const   mongoose = require("mongoose"),
 const UserSchema= new Schema({
     username: String,
     lastName: String,
-    email: String,
+    email: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     password: String,
     students: [],
     isTeacher: {
