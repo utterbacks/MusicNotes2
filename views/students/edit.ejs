@@ -1,0 +1,41 @@
+<%- include ("../partials/header") %>
+
+    <div class="ui centered grid">
+
+        
+        <form class="ui form" action="/student/<%= student._id %>?_method=PUT" method="POST">
+            <div class="ui item">
+                <h1 class="ui header">
+                    Edit <%= student.firstName %>'s information.
+                </h1>
+            </div>
+            <div class="ui hidden divider"></div>
+            <div class="field">
+                <input required="true" type="text" value="<%= student.firstName %>" name="student[firstName]">
+            </div>
+            <div class="field">
+                <input required="true" type="text" name="student[lastName]" value="<%= student.lastName %>">
+            </div>
+            <div class="field">
+                <input required="true" type="date" name="student[age]">
+            </div>
+            <div class="field">
+                <select name="student[instrument]" value="<%= student.instrument %>" class="ui selection dropdown">
+                    <option value="">Instrument</option>
+                    <option value="Guitar">Guitar</option>
+                    <option value="Bass">Bass</option>
+                    <option value="Drums">Drums</option>
+                    <option value="Piano">Piano</option>
+                    <option value="Ukulele">Ukulele</option>
+                  </select>
+            </div>
+            <input class="ui secondary big basic button" type="submit" value="Submit">
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include ("../partials/footer") %>

@@ -20,7 +20,7 @@ router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
                     req.flash("error", err.message);
                     res.redirect("back");
                 } else{
-                    res.render("users/studentDash", {student: foundStudent, assignments: assignments});
+                    res.render("students/studentDash", {student: foundStudent, assignments: assignments});
                 }
             })
         }
@@ -29,7 +29,7 @@ router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
 
 // USER CREATE STUDENT
 router.get("/users/:id/createStudent", middleware.isLoggedIn, function(req, res){
-    res.render("users/createStudent");
+    res.render("students/createStudent");
 });
 
 router.post("/users/:id/createStudent", middleware.isLoggedIn, function(req, res){
@@ -65,7 +65,7 @@ router.get("/users/:id/findStudents", middleware.isLoggedIn, function (req,res){
                     req.flash("error", "No Students Found")
                     console.log(err);
             } else {
-                    res.render("users/studentSelect", {students: students})
+                    res.render("students/studentSelect", {students: students})
             }
     })
 
@@ -95,7 +95,33 @@ router.post("/users/:id/findStudents", middleware.isLoggedIn,  function(req, res
     });       
 });
 
-// parent deletes student
+// PARENT EDITS STUDENT
+
+router.get("/student/:student_id/edit", function(req, res){
+    Student.findById(req.params.student_id, function(err, student){
+        if(err){
+            req.flash("error", "Couldn't find that student");
+            res.redirect("back");
+        } else {
+            res.render("students/edit", {student: student})
+        }
+    })
+})
+
+router.put("/student/:student_id", function(req, res){
+    Student.findByIdAndUpdate(req.params.student_id, req.body.student, function(err, student){
+        if(err){
+            req.flash("error", "couldn't update at this time");
+            res.redirect("back")
+        } else{
+            req.flash("success", "Succesfully update student info")
+            res.redirect("/student/" + req.params.student_id);
+            
+        }
+    })
+})
+
+// PARENT DELETS STUDENT
 
 router.delete("/student/:student_id", function(req, res){
     Student.findByIdAndRemove(req.params.student_id, function(err, foundStudent){
