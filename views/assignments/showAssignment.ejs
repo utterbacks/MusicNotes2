@@ -4,11 +4,17 @@
 <h3><%= assignment.created.toDateString() %></h3>
 <p><%= assignment.content %></p>
 <% if(currentUser && assignment.author.id.equals(currentUser._id)){ %>
+<a href="/student/<%= student._id%>/assignments/<%= assignment._id %>/edit">
+    <button class="ui yellow mini basic button" id="assignments">
+        <i class="pencil alternate icon"></i>
+    </button>
+</a>
 <form action="/student/<%= student._id %>/assignments/<%= assignment._id %>?_method=DELETE" method="POST">
     <button class="ui negative mini basic button" id="assignments">
         <i class="trash alternate outline icon"></i>
     </button>
 </form>
+
 <%}%>
 </div>
 <%- include ("../partials/footer") %>

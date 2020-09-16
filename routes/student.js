@@ -10,20 +10,20 @@ const   express = require("express"),
 
 router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
     Student.findById(req.params.student_id, function(err, foundStudent){
-            if(err || !foundStudent){
-                    req.flash("error", "No Student Found");
-                    console.log(err)
-                    return res.redirect("back");
-            } else{
-                Assignment.find().where("student.id").equals(foundStudent.id).exec(function(err, assignments){
-                    if(err){
-                        req.flash("error", err.message);
-                        res.redirect("back");
-                    } else{
-                        res.render("users/studentDash", {student: foundStudent, assignments: assignments});
-                    }
-                })
-            }
+        if(err || !foundStudent){
+                req.flash("error", "No Student Found");
+                console.log(err)
+                return res.redirect("back");
+        } else{
+            Assignment.find().where("student.id").equals(foundStudent.id).exec(function(err, assignments){
+                if(err){
+                    req.flash("error", err.message);
+                    res.redirect("back");
+                } else{
+                    res.render("users/studentDash", {student: foundStudent, assignments: assignments});
+                }
+            })
+        }
     });
 });
 
