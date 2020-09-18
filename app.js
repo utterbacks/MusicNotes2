@@ -19,7 +19,7 @@ mongoose.connect(process.env.DATABASEURL, {
         useUnifiedTopology: true,
         useFindAndModify: false
 }).then(() => {
-        console.log("You're using the test environment DB. Have fun!")
+        console.log("Connected to DB!")
 }).catch(err => {
         console.log("ERROR", err.message);
 });
@@ -30,8 +30,11 @@ app.use(methodOverride("_method"));
 app.use(flash());
 
 // PASSPORT CONFIG
-app.use(require("express-session")({
-	secret: "Alexa is the best wife.",
+const session = require('express-session'),
+      MongoStore = require("connect-mongo")(session);  
+app.use(session({
+        secret: "Alexa is the best wife.",
+        store: new MongoStore(options),
 	resave: false,
 	saveUninitialized: false
 }));
