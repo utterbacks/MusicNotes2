@@ -13,11 +13,25 @@ const   express = require("express"),
         assignmentRoutes = require("./routes/assignment");
 
 
-mongoose.connect("mongodb://localhost:27017/music_notes2", {
+// mongoose.connect("mongodb+srv://utterbacks:UuJUi5PjXUsb1q5w@musicnotes.9tmxq.mongodb.net/<dbname>?retryWrites=true&w=majority", {
+//         useNewUrlParser: true,
+//         useCreateIndex: true,
+//         useUnifiedTopology: true,
+//         useFindAndModify: false
+// }).then(() => {
+//         console.log("connected to DB");
+// }).catch(err => {
+//         console.log('ERROR:', err.message);
+// });
+mongoose.connect("process.env.DATABASEURL", {
 	useNewUrlParser: true,
 	useCreateIndex: true, 
         useUnifiedTopology: true,
         useFindAndModify: false
+}).then(() => {
+        console.log("You're using the test environment DB. Have fun!")
+}).catch(err => {
+        console.log("ERROR", err.message);
 });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs")
