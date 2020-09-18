@@ -13,8 +13,7 @@ const   express = require("express"),
         assignmentRoutes = require("./routes/assignment");
 
 
-
-mongoose.connect("process.env.DATABASEURL", {
+mongoose.connect(process.env.DATABASEURL, {
 	useNewUrlParser: true,
 	useCreateIndex: true, 
         useUnifiedTopology: true,
