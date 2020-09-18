@@ -61,6 +61,6 @@ app.use(indexRoutes);
 app.use(studentRoutes);
 app.use(assignmentRoutes);
 
-app.listen(3000, function(){
+app.listen(process.env.PORT, function(){
 	console.log("Music Notes is running quick go catch it")
 });
