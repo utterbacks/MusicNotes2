@@ -32,11 +32,13 @@ app.use(flash());
 // PASSPORT CONFIG
 const session = require('express-session'),
       MongoStore = require("connect-mongo")(session);  
-app.use(session({
-        secret: "Alexa is the best wife.",
-        store: new MongoStore(options),
+app.use(require("express-session")({
+	secret: "Alexa is the best wife.",
 	resave: false,
-	saveUninitialized: false
+        saveUninitialized: false,
+        store: new MongoStore({
+                mongooseConnection: mongoose.connection
+        })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
