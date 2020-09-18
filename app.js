@@ -13,16 +13,7 @@ const   express = require("express"),
         assignmentRoutes = require("./routes/assignment");
 
 
-// mongoose.connect("mongodb+srv://utterbacks:UuJUi5PjXUsb1q5w@musicnotes.9tmxq.mongodb.net/<dbname>?retryWrites=true&w=majority", {
-//         useNewUrlParser: true,
-//         useCreateIndex: true,
-//         useUnifiedTopology: true,
-//         useFindAndModify: false
-// }).then(() => {
-//         console.log("connected to DB");
-// }).catch(err => {
-//         console.log('ERROR:', err.message);
-// });
+
 mongoose.connect("process.env.DATABASEURL", {
 	useNewUrlParser: true,
 	useCreateIndex: true, 
