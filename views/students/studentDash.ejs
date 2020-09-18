@@ -1,30 +1,37 @@
 <%- include ("../partials/header") %>
-
-<h1 class="ui huge header"><%= student.firstName %> <%= student.lastName %>'s Assignments</h1>
-<% if(assignments.length === 0 && currentUser.isTeacher === true) {%>
-    <p>No assignments yet! Time to relax.</p>
-    <a  class="ui teal mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
-<% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>  
-    <p>No assignments yet! Time to relax.</p>  
-<% } else if(currentUser.isTeacher === true){ %>
-    <div class="ui relaxed divided list">
-        <% assignments.forEach(function(assignment) { %>
-        <div class="item">
-            <div class="content">
-                <a class="ui secondary mini teal basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+<h1 class="ui huge centered header"><%= student.firstName %>'s Dashboard</h1>
+<div class="ui hidden divider"></div>
+<div class="ui centered divided grid">
+    <div class="eight wide column">
+        <h2 class="ui centered header">Assignments</h2>
+        <% if(assignments.length === 0 && currentUser.isTeacher === true) {%>
+            <p>No assignments yet! Time to relax.</p>
+            <a  class="ui teal mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
+        <% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>  
+            <p>No assignments yet! Time to relax.</p>  
+        <% } else if(currentUser.isTeacher === true){ %>
+            <div class="ui relaxed divided list">
+                <% assignments.forEach(function(assignment) { %>
+                <div class="item">
+                    <div class="content">
+                        <a class="ui secondary mini teal basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+                    </div>
+                </div>
+                <% }) %>
             </div>
-        </div>
-        <% }) %>
+            <a  class="ui mini teal basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
+        <% } else if(currentUser.isTeacher === false) { %> 
+            <ul>
+                <% assignments.forEach(function(assignment) { %>
+                    <li>
+                    <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+                        
+                    </li>
+                    <% }) %>
+            <% } %>
     </div>
-    <a  class="ui mini teal basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
-<% } else if(currentUser.isTeacher === false) { %> 
-    <ul>
-        <% assignments.forEach(function(assignment) { %>
-            <li>
-               <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
-                
-            </li>
-            <% }) %>
-    <% } %>
-
+    <div class="eight wide column">
+        <h2 class="ui centered header">Student Info</h2>
+    </div>
+</div>
 <%- include ("../partials/footer") %>

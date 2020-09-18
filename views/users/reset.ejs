@@ -11,9 +11,11 @@
                 </div>
                 <div class="ui hidden divider"></div>                
                 <div class="field">
-                    <input required="true" type="password" name="password" autofocus="autofocus" placeholder="New Password">
+                    <label for="password">Password (minimum 8 letters and numbers)</label>
+                    <input required="true" type="password" pattern="[0-9a-zA-Z]{8,20}" placeholder="Password" name="password">
                 </div>
                 <div class="field">
+                    <label for="confirm">Confirm Password</label>
                     <input required="true" type="password" name="confirm" placeholder="Confirm Password">
                 </div>
                 <input class="ui centered secondary big basic button" type="submit" value="Update Password">

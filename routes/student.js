@@ -97,7 +97,7 @@ router.post("/users/:id/findStudents", middleware.isLoggedIn,  function(req, res
 
 // PARENT EDITS STUDENT
 
-router.get("/student/:student_id/edit", function(req, res){
+router.get("/student/:student_id/edit", middleware.checkStudentOwnership, function(req, res){
     Student.findById(req.params.student_id, function(err, student){
         if(err){
             req.flash("error", "Couldn't find that student");
