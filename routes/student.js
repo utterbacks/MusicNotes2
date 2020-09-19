@@ -8,7 +8,7 @@ const   express = require("express"),
 
 // STUDENT VIEW
 
-router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
+router.get("/student/:student_id", middleware.isLoggedIn, (req, res) => {
     Student.findById(req.params.student_id, function(err, foundStudent){
         if(err || !foundStudent){
                 req.flash("error", "No Student Found");
@@ -20,7 +20,15 @@ router.get("/student/:student_id", middleware.isLoggedIn, function(req, res){
                     req.flash("error", err.message);
                     res.redirect("back");
                 } else{
-                    res.render("students/studentDash", {student: foundStudent, assignments: assignments});
+                    User.find().where("students.id").equals(foundStudent.id).exec(function(err, parent){
+                        if(err){
+                        req.flash("error", err.message);
+                        res.redirect("back")
+                        } else {
+                            console.log(parent)
+                            res.render("students/studentDash", {student: foundStudent, assignments: assignments, parent: parent});
+                        }
+                    })
                 }
             })
         }
@@ -121,7 +129,7 @@ router.put("/student/:student_id", function(req, res){
     })
 })
 
-// PARENT DELETS STUDENT
+// PARENT DELETES STUDENT
 
 router.delete("/student/:student_id", function(req, res){
     Student.findByIdAndRemove(req.params.student_id, function(err, foundStudent){

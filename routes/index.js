@@ -22,16 +22,16 @@ router.get("/about", function(req, res){
 router.get("/signup", function(req,res){
         res.render("users/signup")
 })
-router.post("/signup", function(req, res){
+router.post("/signup", (req, res) => {
         const newUser = new User({
                 username: req.body.username,
                 lastName: req.body.lastName, 
                 email: req.body.email,
         });
-        if(req.body.adminCode === "newMusicNotesteacher"){
+        if(req.body.adminCode === "newmusicnotesteacher"){
                 newUser.isTeacher = true;
         };
-        User.register(newUser, req.body.password, function(err, user){
+        User.register(newUser, req.body.password, (err, user) => {
                 if(err){
                         console.log(err);
                         return res.render("users/signup", {"error": err.message});
@@ -44,7 +44,7 @@ router.post("/signup", function(req, res){
 });
 
 // user sign-in
-router.get("/signin", function(req, res){
+router.get("/signin", (req, res) => {
     res.render("users/signin");
 });
 router.post('/signin', passport.authenticate('userLocal',
@@ -56,11 +56,11 @@ router.post('/signin', passport.authenticate('userLocal',
 
 // FORGOT PASS
 
-router.get("/forgot", function(req, res){
+router.get("/forgot", (req, res) => {
         res.render("users/forgot");
 })
 
-router.post("/forgot", function(req, res, next){
+router.post("/forgot", (req, res, next) => {
         async.waterfall([
                 function(done) {
                         crypto.randomBytes(20, function(err, buf){

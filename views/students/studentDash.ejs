@@ -4,34 +4,67 @@
 <div class="ui centered divided grid">
     <div class="eight wide column">
         <h2 class="ui centered header">Assignments</h2>
+        
         <% if(assignments.length === 0 && currentUser.isTeacher === true) {%>
+            
             <p>No assignments yet! Time to relax.</p>
-            <a  class="ui teal mini basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
-        <% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>  
+            
+            <a  class="ui teal mini basic button" 
+            id="assignments" 
+            href="/student/<%= student._id %>/createAssignment">
+                New Assignment
+            </a>
+        <% } else if(assignments.length === 0 && currentUser.isTeacher === false) { %>
+
             <p>No assignments yet! Time to relax.</p>  
+
         <% } else if(currentUser.isTeacher === true){ %>
             <div class="ui relaxed divided list">
+                
                 <% assignments.forEach(function(assignment) { %>
+                
                 <div class="item">
                     <div class="content">
-                        <a class="ui secondary mini teal basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
+                        <a class="ui secondary mini teal basic button" 
+                        id= "assignments"   
+                        href="/student/<%= student._id %>/assignments/<%= assignment._id %>">
+                            <%= assignment.created.toDateString() %> - <%= assignment.title %>
+                        </a>
                     </div>
                 </div>
                 <% }) %>
             </div>
-            <a  class="ui mini teal basic button" id="assignments" href="/student/<%= student._id %>/createAssignment">New Assignment</a>
+            <a  class="ui mini teal basic button" 
+                id="assignments" 
+                href="/student/<%= student._id %>/createAssignment">
+                    New Assignment
+            </a>
         <% } else if(currentUser.isTeacher === false) { %> 
             <ul>
                 <% assignments.forEach(function(assignment) { %>
                     <li>
-                    <a class="ui secondary mini basic button" id= "assignments" href="/student/<%= student._id %>/assignments/<%= assignment._id %>"><%= assignment.title %></a>
-                        
+                    <a class="ui secondary mini basic button" 
+                        id= "assignments"  
+                        href="/student/<%= student._id %>/assignments/<%= assignment._id %>">
+                            <%= assignment.created.toDateString() %> - <%= assignment.title %>
+                        </a> 
                     </li>
                     <% }) %>
             <% } %>
     </div>
+<!-- this is all outside of the assignment display loop logic -->
     <div class="eight wide column">
         <h2 class="ui centered header">Student Info</h2>
+        <div class="ui centered divided grid">
+            <div class="six wide column">
+                <p>Birthday: <%= student.age %></p>
+                <p>Instrument: <%= student.instrument %></p>
+            </div>
+            <div class="six wide column">
+                <p>Managing parent: <%= parent.username  %></p>
+                <p>Loves dogs and music.</p>
+            </div>
+        </div>
     </div>
 </div>
 <%- include ("../partials/footer") %>
