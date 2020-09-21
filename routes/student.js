@@ -20,12 +20,11 @@ router.get("/student/:student_id", middleware.isLoggedIn, (req, res) => {
                     req.flash("error", err.message);
                     res.redirect("back");
                 } else{
-                    User.find().where("students.id").equals(foundStudent.id).exec(function(err, parent){
+                    User.findById(foundStudent.parent.id, function(err, parent){
                         if(err){
-                        req.flash("error", err.message);
-                        res.redirect("back")
+                            req.flash("error", err.message);
+                            res.redirect("back")
                         } else {
-                            console.log(parent)
                             res.render("students/studentDash", {student: foundStudent, assignments: assignments, parent: parent});
                         }
                     })

@@ -12,6 +12,7 @@ const   express = require("express"),
         studentRoutes = require("./routes/student"),
         assignmentRoutes = require("./routes/assignment");
 
+// "mongodb://localhost:27017/music_notes2"
 
 mongoose.connect(process.env.DATABASEURL, {
 	useNewUrlParser: true,
@@ -61,6 +62,10 @@ app.use(indexRoutes);
 app.use(studentRoutes);
 app.use(assignmentRoutes);
 
-app.listen(process.env.PORT, function(){
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port, function(){
 	console.log("Music Notes is running quick go catch it")
 });

@@ -9,17 +9,17 @@ const   express = require("express"),
         crypto = require("crypto");
 
 // LANDING
-router.get("/", function(req, res){
+router.get("/", (req, res) => {
     res.render("landing");
 });
 
 // MORE INFO
-router.get("/about", function(req, res){
+router.get("/about", (req, res) => {
     res.render("learnMore");
 });
 
 // new user
-router.get("/signup", function(req,res){
+router.get("/signup", (req,res) => {
         res.render("users/signup")
 })
 router.post("/signup", (req, res) => {
@@ -33,12 +33,12 @@ router.post("/signup", (req, res) => {
         };
         User.register(newUser, req.body.password, (err, user) => {
                 if(err){
-                        console.log(err);
-                        return res.render("users/signup", {"error": err.message});
+                console.log(err);
+                return res.render("users/signup", {"error": err.message});
                 } 
                 passport.authenticate("userLocal")(req, res, function(){
-                        req.flash("success", "Welcome to MusicNotes, " + user.username + "!");
-                        res.redirect("/users/:id");
+                req.flash("success", "Welcome to MusicNotes, " + user.username + "!");
+                res.redirect("/users/:id");
                 });
         });
 });
