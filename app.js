@@ -41,7 +41,8 @@ app.use(require("express-session")({
         saveUninitialized: false,
         store: new MongoStore({
                 mongooseConnection: mongoose.connection
-        })
+        }),
+        expires: new Date(Date.now() + (7 * 86400))
 }));
 app.use(passport.initialize());
 app.use(passport.session());
