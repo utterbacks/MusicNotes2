@@ -1,5 +1,5 @@
 <%- include ("../partials/header") %>
-<h1 class="ui huge centered header"><%= student.firstName %>'s Dashboard</h1>
+<h1 class="ui huge centered header"><%= student.firstName %> <%= student.lastName %>'s Dashboard</h1>
 <div class="ui hidden divider"></div>
 <div class="ui centered divided grid">
     <div class="eight wide column">
@@ -61,7 +61,7 @@
                 <p>Instrument: <%= student.instrument %></p>
             </div>
             <div class="six wide column">
-                <p>Managing parent: <%= parent.username  %></p>
+                <p>Managing parent: <%= parent.firstName %></p>
                 <p>Loves dogs and music.</p>
             </div>
         </div>

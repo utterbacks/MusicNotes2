@@ -8,6 +8,8 @@ const   express = require("express"),
         methodOverride = require("method-override"),
         expressSanitizer = require("express-sanitizer"),
         User = require("./models/user"),
+        async = require("async"),
+        nodemailer = require("nodemailer"),
         indexRoutes = require("./routes/index"),
         studentRoutes = require("./routes/student"),
         assignmentRoutes = require("./routes/assignment");
@@ -34,7 +36,7 @@ app.use(flash());
 const session = require('express-session'),
       MongoStore = require("connect-mongo")(session);  
 app.use(require("express-session")({
-	secret: "Alexa is the best wife.",
+	secret: process.env.PASSPORTSECRET,
 	resave: false,
         saveUninitialized: false,
         store: new MongoStore({
@@ -43,7 +45,7 @@ app.use(require("express-session")({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use("userLocal", new localStrategy(User.authenticate()));
+passport.use("local", new localStrategy(User.authenticate()));
 passport.serializeUser(function(user, done) { 
         done(null, user);
       });

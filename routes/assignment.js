@@ -2,6 +2,8 @@ const   express = require("express"),
         router = express.Router(),
         Assignment = require("../models/assignment"),
         Student = require("../models/student"),
+        User = require("../models/user"),
+        nodemailer = require("nodemailer"),
         middleware = require("../middleware");
 
 
@@ -48,8 +50,39 @@ router.post("/student/:student_id/createAssignment", function(req, res){
                                         res.redirect("/student/" + req.params.student_id);
                                 }
                         });
+                        User.findById(foundStudent.parent.id, function(err, parent){
+                                const smtpTransport = nodemailer.createTransport({
+                                        service: 'gmail',
+                                        auth: {
+                                                type: 'OAuth2',
+                                                user: 'musicnoteshelp@gmail.com',
+                                                clientId: '106565881651-mjsq8rnsmodnlf7l8l6ak6jc2r3qfgue.apps.googleusercontent.com',
+                                                clientSecret: 'y-mZ0ltUVzqAVOCiYkqiGV15',
+                                                refreshToken: '1//04TysrBLi4-WjCgYIARAAGAQSNwF-L9IrfpBX3ULxINmoOdh5QLSZVR0c3ejJyxTx_tUwBxrXSdRvWltXmXxpnuwqG_h8PpXYy5E',
+                                                accessToken: 'ya29.a0AfH6SMA7d1IGUqLZWDTXr1qUT0hFdnoxLtVgFHbD0yAbC7MzKz6lC3d8N9fo0_AUQK_Yiia1PZovFXas6A3TnWoW1lHxufuxGKOptm-pdcnpwpG0KDA_GTMy-uFpTpK7liGPBk1Ow4iZjJwwZcdSZbPB7D-HqSSUBmw'
+                                        }
+                                });
+                                const mailOptions = {
+                                        to: parent.email,
+                                        from: "musicnoteshelp@gmail.com",
+                                        subject: "You have a new assignment!",
+                                        text: "You have a new assignment in Lesson Notebook! " +
+                                                + "Sign in and check it out: " +
+                                                        "http://" + req.headers.host + "/signin\n\n" +
+                                                        "Happy practicing!"
+                                                
+                                };
+                                smtpTransport.sendMail(mailOptions, function(err){
+                                        if(err){
+                                                req.flash("error", err.message);
+                                        } else{
+                                                console.log("mail sent");
+                                        }
+                                })
+                        });
                 }
         });
+        
 });
 
 
@@ -89,7 +122,7 @@ router.get("/student/:student_id/assignments/:assignment_id/edit", middleware.ch
                 req.flash("error", err.message);
                 res.redirect("back");
                }
-        })
+        });
 })
 
 router.put("/student/:student_id/assignments/:assignment_id", function(req, res){

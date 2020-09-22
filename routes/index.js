@@ -1,8 +1,9 @@
-const Student = require("../models/student");
+const { doesNotReject } = require("assert");
 
 const   express = require("express"),
         router = express.Router(),
         passport = require("passport"),
+        Student = require("../models/student"),
         User = require("../models/user"),
         async = require("async"),
         nodemailer = require("nodemailer"),
@@ -22,24 +23,60 @@ router.get("/about", (req, res) => {
 router.get("/signup", (req,res) => {
         res.render("users/signup")
 })
+
+
 router.post("/signup", (req, res) => {
         const newUser = new User({
-                username: req.body.username,
+                firstName: req.body.firstName,
                 lastName: req.body.lastName, 
                 email: req.body.email,
         });
         if(req.body.adminCode === "newmusicnotesteacher"){
                 newUser.isTeacher = true;
         };
-        User.register(newUser, req.body.password, (err, user) => {
-                if(err){
+        User.register(newUser, req.body.password, function (err, user){
+        if(err){
                 console.log(err);
-                return res.render("users/signup", {"error": err.message});
-                } 
-                passport.authenticate("userLocal")(req, res, function(){
-                req.flash("success", "Welcome to MusicNotes, " + user.username + "!");
-                res.redirect("/users/:id");
-                });
+                return res.redirect("users/signup", {"error": err.message});
+                };
+                req.login(user, function(err){    
+                        if(err){
+                                req.flash("error", err.message);
+                                res.redirect("back")
+                        } else{
+                        req.flash("success", "Welcome to MusicNotes, " + user.firstName + "! Check your email and spam folder and make sure to whitelist musicnoteshelp@gmail.com so you receive assignment notifications!");
+                        res.redirect("/users/:id")
+                        }
+                });    
+                
+        });
+        const smtpTransport = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                        type: 'OAuth2',
+                        user: 'musicnoteshelp@gmail.com',
+                        clientId: '106565881651-mjsq8rnsmodnlf7l8l6ak6jc2r3qfgue.apps.googleusercontent.com',
+                        clientSecret: 'y-mZ0ltUVzqAVOCiYkqiGV15',
+                        refreshToken: '1//04TysrBLi4-WjCgYIARAAGAQSNwF-L9IrfpBX3ULxINmoOdh5QLSZVR0c3ejJyxTx_tUwBxrXSdRvWltXmXxpnuwqG_h8PpXYy5E',
+                        accessToken: 'ya29.a0AfH6SMA7d1IGUqLZWDTXr1qUT0hFdnoxLtVgFHbD0yAbC7MzKz6lC3d8N9fo0_AUQK_Yiia1PZovFXas6A3TnWoW1lHxufuxGKOptm-pdcnpwpG0KDA_GTMy-uFpTpK7liGPBk1Ow4iZjJwwZcdSZbPB7D-HqSSUBmw'
+                }
+        });
+        const mailOptions = {
+                to: newUser.email,
+                from: "musicnoteshelp@gmail.com",
+                subject: "Welcome to Lesson Notebook!",
+                text: "You are receiving this email because you signed up for Lesson Notebook"
+                        + "Make sure that this email address is added to your inbox so that you see when a new assignment has been posted. " +
+                        + "Click here to sign in and create a student so that your teacher can create their first assignment! \n\n" +
+                        "http://" + req.headers.host + "/signin\n\n" 
+                        
+        };
+        smtpTransport.sendMail(mailOptions, function(err){
+                if(err){
+                        req.flash("error", err.message);
+                } else{
+                        console.log("mail sent");
+                }
         });
 });
 
@@ -47,8 +84,8 @@ router.post("/signup", (req, res) => {
 router.get("/signin", (req, res) => {
     res.render("users/signin");
 });
-router.post('/signin', passport.authenticate('userLocal',
-        { 
+router.post('/signin', passport.authenticate('local',
+{ 
         successRedirect: '/users/:id',
         failureRedirect: '/signin',
         failureFlash: true

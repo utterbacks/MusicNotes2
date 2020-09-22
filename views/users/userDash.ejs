@@ -3,10 +3,12 @@
 
 <% if(user.isTeacher === true) { %>
     <% if(students.length === 0) {%>
-        <h1 class="ui huge header"><%= user.username%>'s Teacher Dashboard</h1>
+        <h1 class="ui huge header"><%= user.firstName%>'s Teacher Dashboard</h1>
         <h2 class="ui big header">Here are your students:</h2>
         <p>No one is registered! <a href="/users/<%= user._id %>/findStudents">Let's find our students.</a></p>
     <% } else { %>
+        <h1 class="ui huge header"><%= user.firstName%>'s Teacher Dashboard</h1>
+
         <div class="ui relaxed divided list">
             <% students.forEach(function(student){ %>
                 <div class="item">
@@ -29,7 +31,7 @@
         <p><a href="/users/<%= user._id %>/findStudents">Let's find more students.</a></p>
     <% } %>
 <% } else if(user.isTeacher === false) {%>
-    <h1 class="ui huge header"><%= user.username%>'s Dashboard</h1>
+    <h1 class="ui huge header"><%= user.firstName%>'s Dashboard</h1>
     <h2 class="ui big header">Here are your students:</h2>
     <% if(students.length === 0) {%>
         <p>Oops! Looks like you haven't registered a student. <a href="/users/<%= user._id %>/createStudent">You can do that here.</a> </p>
