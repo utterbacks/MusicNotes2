@@ -67,7 +67,7 @@ router.post("/signup", (req, res) => {
                 subject: "Welcome to Lesson Notebook!",
                 text: "You are receiving this email because you signed up for Lesson Notebook"
                         + "Make sure that this email address is added to your inbox so that you see when a new assignment has been posted. " +
-                        + "Click here to sign in and create a student so that your teacher can create their first assignment! \n\n" +
+                        + "Click here to sign in and create a student so that your teacher can create their first assignment! " +
                         "http://" + req.headers.host + "/signin\n\n" 
                         
         };
