@@ -57,7 +57,7 @@ router.post("/student/:student_id/createAssignment", function(req, res){
                                                 type: 'OAuth2',
                                                 user: 'musicnoteshelp@gmail.com',
                                                 clientId: '106565881651-mjsq8rnsmodnlf7l8l6ak6jc2r3qfgue.apps.googleusercontent.com',
-                                                clientSecret: 'y-mZ0ltUVzqAVOCiYkqiGV15',
+                                                clientSecret: process.env.CLIENTSECRET,
                                                 refreshToken: '1//04TysrBLi4-WjCgYIARAAGAQSNwF-L9IrfpBX3ULxINmoOdh5QLSZVR0c3ejJyxTx_tUwBxrXSdRvWltXmXxpnuwqG_h8PpXYy5E',
                                                 accessToken: 'ya29.a0AfH6SMA7d1IGUqLZWDTXr1qUT0hFdnoxLtVgFHbD0yAbC7MzKz6lC3d8N9fo0_AUQK_Yiia1PZovFXas6A3TnWoW1lHxufuxGKOptm-pdcnpwpG0KDA_GTMy-uFpTpK7liGPBk1Ow4iZjJwwZcdSZbPB7D-HqSSUBmw'
                                         }
