@@ -15,7 +15,7 @@ router.get("/student/:student_id", middleware.isLoggedIn, (req, res) => {
                 console.log(err)
                 return res.redirect("back");
         } else{
-            Assignment.find().where("student.id").equals(foundStudent.id).exec(function(err, assignments){
+            Assignment.find().where("student.id").equals(foundStudent.id).sort({ created: 'desc'}).exec(function(err, assignments){
                 if(err){
                     req.flash("error", err.message);
                     res.redirect("back");

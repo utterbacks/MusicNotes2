@@ -11,7 +11,7 @@
                     </div>
                     <div class="ui hidden divider"></div>
                     <div class="field">
-                        <label for="firstName">First Name</label>
+                        <label for="firstName">Parent's First Name</label>
                         <input required="true" type="text" placeholder="First Name" name="firstName">
                     </div>
                     <div class="field">
@@ -19,12 +19,19 @@
                         <input required="true" type="text" name="lastName" placeholder="Last Name">
                     </div>
                     <div class="field">
+                        <label for="school">Select your school!</label>
+                        <select name="school" id="school"></select>
+                    </div>
+                    <div class="field">
                         <label for="email">Email</label>
-                        <input required="true" type="email" placeholder="Email" name="email">
+                        <input required type="email" placeholder="Email" name="email">
                     </div>
                     <div class="field">
                         <label for="password">Password (One number, one letter, one special character, at least eight total)</label>
-                        <input required="true" type="password" pattern="[0-9a-zA-Z!@#$%^&*+]{8,20}" placeholder="Password" name="password">
+                        <input required type="password" pattern="[0-9a-zA-Z!@#$%^&*+]{8,20}" placeholder="Password" id="password" name="password">
+                    </div>
+                    <div class="field">
+                        <input type="password" id="confirm_password" placeholder="Confirm Password" required>
                     </div>
                     <div class="field">
                         <label for="adminCode">For Teachers</label>
