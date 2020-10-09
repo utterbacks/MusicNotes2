@@ -16,7 +16,13 @@ const UserSchema= new Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     password: String,
-    students: [],
+    school: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "School"
+        },
+        schoolName: String,
+    },
     isTeacher: {
         type: Boolean,
         default: false

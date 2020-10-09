@@ -4,9 +4,8 @@
     <div class="ui centered divided grid">
         <div class="eight wide column">
         <% if(user.isTeacher === true) { %>
-            <% if(students.length === 0) {%>
-                
-                <h2 class="ui big header">Here are your students:</h2>
+            <h2 class="ui big header">Here are your students:</h2>
+             <% if(students.length === 0) {%>   
                 <p>No one is registered! <a href="/users/<%= user._id %>/findStudents">Let's find our students.</a></p>
             <% } else { %>
 
@@ -64,7 +63,8 @@
             <% } %>
             <%}%>
         </div>
-    
+<!-- this is independent of whether or not current user is teacher; general info -->
+
     <div class="eight wide column">
         <h2 class="ui centered header">Profile</h2>
         <div class="ui relaxed divided list">
@@ -76,7 +76,7 @@
                         <li>Your school: <%= user.school %></li>
                         <br>
                         <li>Your Teachers: <%= user.teachers %></li>
-                        <a href="#">
+                        <a href="/users/<%= user._id %>/edit%>">
                             <button class="ui yellow mini basic button" id="assignments">
                                 <i class="pencil alternate icon"></i>
                             </button>
@@ -87,7 +87,6 @@
         </div>
     </div>
 </div>
-    <!-- this is independent of whether or not current user is teacher; general info -->
 
     </div>
 

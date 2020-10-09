@@ -1,0 +1,37 @@
+<%- include ("../partials/header") %>
+
+<div class="ui centered grid">
+    <div class="row">
+        <div class="eight wide column">
+            <form class="ui form" action="/users/<%= user._id %>?_method=PUT" method="POST">
+                <div class="ui item">
+                    <h1 class="ui  header">
+                        Edit your info:
+                    </h1>
+                </div>
+                <div class="ui hidden divider"></div>
+                <div class="field">
+                    <label for="username">First Name</label>
+                    <input value="<%= user.username%>" required="true" type="text" placeholder="First Name" name="username">
+                </div>
+                <div class="field">
+                    <label for="lastName">Last Name</label>
+                    <input value="<%= user.lastName %>" required="true" type="text" name="lastName" placeholder="Last Name">
+                </div>
+                <div class="field">
+                    <label for="school">Your school</label>
+                    <select value="<%= user.school %>" name="school" id="school"></select>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input value="<%= user.email%>" required type="email" placeholder="Email" name="email">
+                </div>
+                
+                <input class="ui secondary big basic button" type="submit" value="Let's Get Started">
+            </form> 
+        </div>
+    </div>
+</div>
+</div>
+
+<%- include ("../partials/footer") %>

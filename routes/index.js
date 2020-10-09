@@ -24,7 +24,6 @@ router.get("/signup", (req,res) => {
         res.render("users/signup")
 })
 
-
 router.post("/signup", (req, res) => {
         const newUser = new User({
                 username: req.body.username,
@@ -46,7 +45,7 @@ router.post("/signup", (req, res) => {
                                 res.redirect("back")
                         } else{
                         req.flash("success", "Welcome to MusicNotes, " + user.username + "! Check your email and spam folder and make sure to whitelist musicnoteshelp@gmail.com so you receive assignment notifications!");
-                        res.redirect("/users/:id")
+                        res.redirect("/users/:id", {user: user})
                         }
                 });    
                 
@@ -83,14 +82,63 @@ router.post("/signup", (req, res) => {
 
 // user sign-in
 router.get("/signin", (req, res) => {
-    res.render("users/signin");
+        res.render("users/signin");
 });
 router.post('/signin', passport.authenticate('local',
-{ 
-        successRedirect: '/users/:id',
-        failureRedirect: '/signin',
-        failureFlash: true
+    { 
+            successRedirect: '/users/:id',
+            failureRedirect: '/signin',
+            failureFlash: true
 }));
+    
+// user dash
+
+router.get("/users/:id", function(req, res){
+        User.findById(req.user._id, function(err, foundUser){
+                if(err){
+                        req.flash("error", err.message);
+                        res.redirect("back");
+                } else if(foundUser.isTeacher === false){
+                        Student.find().where("parent.id").equals(foundUser._id).exec(function(err, students){
+                                if(err){          
+                                        req.flash("error", err.message);
+                                        res.redirect("back");
+                                }
+                                res.render("users/userDash", {user: foundUser, students: students});
+                                })
+                } else if(foundUser.isTeacher === true){
+                        Student.find().where("teacher._id").equals(foundUser._id).exec(function(err, students){
+                                if(err){
+                                        req.flash("error", err.message);
+                                        res.redirect("back");
+                                }
+                                res.render("users/userDash", {user: foundUser, students: students})
+                        })
+                }
+        });
+});
+
+// USER EDIT PROFILE
+
+router.get("/users/:id/edit", (req, res) => {
+        User.findById(req.user._id, function(err, user){
+                if(err){
+                        console.log(err)
+                }
+                res.render("users/edit", {user: user});
+        })
+});
+
+router.put("/users/:id", (req, res) => {
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+                if(err){
+                        req.flash("error", err.message)
+                        res.redirect("back");
+                }
+                req.flash("success", "Successfully updated your profile!")
+                res.redirect("/users/:id")
+        })
+})
 
 // FORGOT PASS
 
@@ -218,32 +266,7 @@ router.post("/reset/:token", function(req, res){
 });
 
 
-            // user dash
-router.get("/users/:id", function(req, res){
-        User.findById(req.user._id, function(err, foundUser){
-                if(err){
-                        req.flash("error", err.message);
-                        res.redirect("back");
-                } else if(foundUser.isTeacher === false){
-                        Student.find().where("parent.id").equals(foundUser._id).exec(function(err, students){
-                                if(err){          
-                                        req.flash("error", err.message);
-                                        res.redirect("back");
-                                }
-                                res.render("users/userDash", {user: foundUser, students: students});
-                                })
-                } else if(foundUser.isTeacher === true){
-                        Student.find().where("teacher._id").equals(foundUser._id).exec(function(err, students){
-                                if(err){
-                                        req.flash("error", err.message);
-                                        res.redirect("back");
-                                }
-                                res.render("users/userDash", {user: foundUser, students: students})
-                        })
-                }
-                
-        })
-});
+
 
 router.get("/logout", function(req, res){
 	req.logout();
