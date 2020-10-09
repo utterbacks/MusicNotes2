@@ -1,10 +1,12 @@
+const { schema } = require("./student");
+
 const   mongoose = require("mongoose"),
         Schema = mongoose.Schema,
         passportLocalMongoose = require("passport-local-mongoose");
 
 
 const UserSchema= new Schema({
-    firstName: String,
+    username: String,
     lastName: String,
     email: {
         type: String,
@@ -22,6 +24,7 @@ const UserSchema= new Schema({
     
 });
 
+schema.plugin(require('mongoose-beautiful-unique-validation'));
 UserSchema.plugin(passportLocalMongoose, {usernameField: "email"});
 
 const User = mongoose.model("user", UserSchema);

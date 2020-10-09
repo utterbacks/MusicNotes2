@@ -27,7 +27,7 @@ router.get("/signup", (req,res) => {
 
 router.post("/signup", (req, res) => {
         const newUser = new User({
-                firstName: req.body.firstName,
+                username: req.body.username,
                 lastName: req.body.lastName, 
                 email: req.body.email,
         });
@@ -37,14 +37,15 @@ router.post("/signup", (req, res) => {
         User.register(newUser, req.body.password, function (err, user){
         if(err){
                 console.log(err);
-                return res.redirect("users/signup", {"error": err.message});
+                req.flash("error", err.message)
+                return res.redirect("users/signup");
                 };
                 req.login(user, function(err){    
                         if(err){
                                 req.flash("error", err.message);
                                 res.redirect("back")
                         } else{
-                        req.flash("success", "Welcome to MusicNotes, " + user.firstName + "! Check your email and spam folder and make sure to whitelist musicnoteshelp@gmail.com so you receive assignment notifications!");
+                        req.flash("success", "Welcome to MusicNotes, " + user.username + "! Check your email and spam folder and make sure to whitelist musicnoteshelp@gmail.com so you receive assignment notifications!");
                         res.redirect("/users/:id")
                         }
                 });    
