@@ -9,7 +9,8 @@ const   express = require("express"),
         User = require("./models/user"),
         indexRoutes = require("./routes/index"),
         studentRoutes = require("./routes/student"),
-        assignmentRoutes = require("./routes/assignment");
+        assignmentRoutes = require("./routes/assignment"),
+        schoolRoutes = require("./routes/school")
 
 // "mongodb://localhost:27017/music_notes2"
 
@@ -61,6 +62,7 @@ app.use(function(req, res, next){
 app.use(indexRoutes);
 app.use(studentRoutes);
 app.use(assignmentRoutes);
+app.use(schoolRoutes);
 
 let port = process.env.PORT;
 if (port == null || port == "") {

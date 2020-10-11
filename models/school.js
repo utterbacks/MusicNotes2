@@ -3,6 +3,14 @@ const mongoose = require('mongoose'),
 
 const SchoolSchema = new Schema({
     schoolName: String,
+    admin: {
+        id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
+    instruments: [],
     teachers: [{
         id: {
             type: mongoose.Schema.Types.ObjectId,

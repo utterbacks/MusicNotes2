@@ -30,7 +30,7 @@
                 </div>
                 <p><a href="/users/<%= user._id %>/findStudents">Let's find more students.</a></p>
             <% } %>
-        <% } else if(user.isTeacher === false) {%>
+        <% } else if(user.isTeacher === false && user.isAdmin === false) {%>
             <h2 class="ui big header">Here are your students:</h2>
             <% if(students.length === 0) {%>
                 <p>Oops! Looks like you haven't registered a student. <a href="/users/<%= user._id %>/createStudent">You can do that here.</a> </p>
@@ -61,8 +61,16 @@
                     <p><a href="/users/<%= user._id %>/createStudent">Add a new student.</a></p>
                 </div>
             <% } %>
-            <%}%>
-        </div>
+        <%} else if(user.isAdmin === true){ %>
+            <h2 class="ui big header">Here's some useful info about your school:</h2>
+            <% if(students.length === 0) {%>
+                <p>Oops! Looks like you haven't created your school! Let's start teaching! <a href="/createSchool">You can do that here.</a> </p>
+            <% } else { %>
+                
+                </div>
+            <% } %>
+            <% } %>
+    </div>
 <!-- this is independent of whether or not current user is teacher; general info -->
 
     <div class="eight wide column">

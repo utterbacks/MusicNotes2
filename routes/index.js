@@ -32,6 +32,8 @@ router.post("/signup", (req, res) => {
         });
         if(req.body.adminCode === "newmusicnotesteacher"){
                 newUser.isTeacher = true;
+        } else if(req.body.adminCode === "lessonnotebookadmin"){
+                newUser.isAdmin = true;
         };
         User.register(newUser, req.body.password, function (err, user){
         if(err){
@@ -45,7 +47,7 @@ router.post("/signup", (req, res) => {
                                 res.redirect("back")
                         } else{
                         req.flash("success", "Welcome to MusicNotes, " + user.username + "! Check your email and spam folder and make sure to whitelist musicnoteshelp@gmail.com so you receive assignment notifications!");
-                        res.redirect("/users/:id", {user: user})
+                        res.redirect("/users/:id")
                         }
                 });    
                 

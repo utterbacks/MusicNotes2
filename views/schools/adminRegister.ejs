@@ -1,0 +1,42 @@
+<%- include ("../partials/header") %>
+
+<div class="ui centered grid">
+    <div class="row">
+        <div class="eight wide column">
+            <form class="ui centered form" action="/signup" method="POST">
+                <div class="ui item">
+                    <h1 class="ui centered header">
+                        Admin Registration
+                    </h1>
+                </div>
+                <div class="ui hidden divider"></div>
+                <div class="field">
+                    <label for="firstName">Your First Name</label>
+                    <input required="true" type="text" placeholder="First Name" name="username">
+                </div>
+                <div class="field">
+                    <label for="lastName">Last Name</label>
+                    <input required="true" type="text" name="lastName" placeholder="Last Name">
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input required type="email" placeholder="Email" name="email">
+                </div>
+                <div class="field">
+                    <label for="password">Password (One number, one letter, one special character, at least eight total)</label>
+                    <input required type="password" pattern="[0-9a-zA-Z!@#$%^&*+]{8,20}" placeholder="Password" id="password" name="password">
+                </div>
+                <div class="field">
+                    <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+                </div>
+                <div class="field">
+                    <label for="adminCode">Admin Code</label>
+                    <input type="password" placeholder="Admin Code" name="adminCode">
+                </div>
+                <input class="ui secondary big basic button" type="submit" value="Let's Get Started">
+            </form> 
+        </div>
+    </div>
+</div>
+</div>
+<%- include ("../partials/footer") %>
