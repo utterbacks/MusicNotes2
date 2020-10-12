@@ -10,21 +10,30 @@
         <div class="ui hidden divider"></div>
         <div class="field">
             <label for="firstName">School Name</label>
-            <input required="true" type="text" placeholder="First Name" name="firstName">
+            <input required="true" type="text" placeholder="School Name" name="schoolName">
         </div>
         <div class="field">
-            <label for="lastName">Last Name</label>
-            <input required="true" type="text" name="lastName" placeholder="Last Name">
-        </div>
-        <div class="field">
-            <label for="instrument">Instrument</label>
-            <select name="instrument" class="ui selection dropdown">
-                <option value=""></option>
-                <option value="Guitar">Guitar</option>
-                <option value="Bass">Bass</option>
-                <option value="Drums">Drums</option>
-                <option value="Piano">Piano</option>
-                <option value="Ukulele">Ukulele</option>
+            <label for="instrument">Instruments You Offer</label>
+            <select name="skills" multiple="" class="ui fluid dropdown">
+                <option value="">Skills</option>
+              <option value="angular">Angular</option>
+              <option value="css">CSS</option>
+              <option value="design">Graphic Design</option>
+              <option value="ember">Ember</option>
+              <option value="html">HTML</option>
+              <option value="ia">Information Architecture</option>
+              <option value="javascript">Javascript</option>
+              <option value="mech">Mechanical Engineering</option>
+              <option value="meteor">Meteor</option>
+              <option value="node">NodeJS</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="python">Python</option>
+              <option value="rails">Rails</option>
+              <option value="react">React</option>
+              <option value="repair">Kitchen Repair</option>
+              <option value="ruby">Ruby</option>
+              <option value="ui">UI Design</option>
+              <option value="ux">User Experience</option>
               </select>
         </div>
         <input class="ui secondary big basic button" type="submit" value="Submit">
