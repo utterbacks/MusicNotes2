@@ -2,7 +2,7 @@
 
 <h1><%= assignment.title %></h1>
 <h3><%= assignment.created.toDateString() %></h3>
-<p><%= assignment.content %></p>
+<p> <%- assignment.content %></p>
 <% if(currentUser && assignment.author.id.equals(currentUser._id)){ %>
 <a href="/student/<%= student._id%>/assignments/<%= assignment._id %>/edit">
     <button class="ui yellow mini basic button" id="assignments">
