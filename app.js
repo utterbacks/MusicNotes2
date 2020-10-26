@@ -10,7 +10,7 @@ const   express = require("express"),
         indexRoutes = require("./routes/index"),
         studentRoutes = require("./routes/student"),
         assignmentRoutes = require("./routes/assignment"),
-        schoolRoutes = require("./routes/school")
+        schoolRoutes = require("./routes/school");
 
 // "mongodb://localhost:27017/music_notes2"
 
